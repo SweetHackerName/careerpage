@@ -79,6 +79,8 @@ jQuery(document).ready(function($) {
 		var $filteredJobs = [];
 		var $allJobs = $('ul.open-jobs > li');
 		$('.clear-filters').prop("disabled", true);
+		//Question - why not just do $filteredJobs.push($allJobs)?
+		//Or just do $filteredJobs = $allJobs or $filteredJobs = $('ul.open-jobs > li'); for initial assignment?
 		$filteredJobs.push.apply($filteredJobs, $allJobs);
 
 		//change listings per page here
@@ -142,59 +144,20 @@ jQuery(document).ready(function($) {
 
 		var filters = $('.tavern-filter').click(function() {
 			applyFilter(this.id);
-
-			/* Commenting out logic to test using applyFilter
-			console.log(this);
-			$('ul.open-jobs > li').removeClass('paginated');
-
-			var el = $('.' + this.id);
-			if (this.id.match(/(manage)/)) {
-				el = $('.job-four-corners-tavern-group');
-			}
-			if (this.id.match(/(office|corpor)/)) {
-				el = $('.job-four-corners-tavern-group-corporate-office');
-			}
-
-			// original line: if (!el[0] && !$('.tab-option').first().hasClass('tab-selected')){
-			if (!el[0]){
-				message.text('Sorry, we are not currently hiring for these positions.').appendTo(jazzListings);
-				$('.jobs-message').show();
-			} else {
-				$('.jobs-message').hide();
-			}
-
-			if ($(this).prop('checked')){
-				el.addClass('show-job');
-				$filteredJobs = $('.show-job');
-				//setting page back to 1 every time they refilter
-				currentPage = 1;
-				paginate($filteredJobs, resultsNum, currentPage);
-				paginateButtons();
-				$('.clear-filters').prop("disabled", false);
-			}else {
-				el.removeClass('show-job');
-				$filteredJobs = $('.show-job');
-				currentPage = 1;
-				paginate($filteredJobs, resultsNum, currentPage);
-				paginateButtons();
-			}
-			// $('.tavern-filter').removeClass('tavern-selected');
-			// $(this).addClass('tavern-selected');
-			// $('html, body').animate({
-			// 	scrollTop: $(document).height()
-			// }, 300);
-			$(".shell").scrollTop(1000);
-			*/
 		});
+
+		function clearAll()
+		{
+			$('ul.open-jobs > li').removeClass('show-job paginated');
+			$filteredJobs=[];
+			applyFilter(null, true)
+
+		}
 
 		$clear.click(function(e){
 			e.preventDefault();
-			$('ul.open-jobs > li').removeClass('show-job paginated');
-			// $('ul.open-jobs > li').fadeOut(450);
-			$('.tavern-filter').prop("checked", false);
-			$('.clear-filters').prop("disabled", true);
-			message.text('Select some filters to see job listing results, otherwise SEE ALL JOBS by refreshing the page.').appendTo(jazzListings);
-			$('.jobs-message').show();
+			clearAll();
+
 		})
 
 		var openJob = $('.open-job').click(function() {
@@ -255,6 +218,7 @@ jQuery(document).ready(function($) {
 					}else {
 						el.removeClass('show-job');
 						$filteredJobs = $('.show-job');
+
 						currentPage = 1;
 						paginate($filteredJobs, resultsNum, currentPage);
 						paginateButtons();
@@ -274,6 +238,18 @@ jQuery(document).ready(function($) {
 			else
 			{
 				console.log("no location id");
+				console.log("numJobs" + $filteredJobs.length.toString())
+			}
+			if($filteredJobs.length === 0)
+			{
+				console.log("no jobs shown" + $filteredJobs.length.toString())
+				$filteredJobs= $('ul.open-jobs > li');
+
+				currentPage = 1;
+				paginate($filteredJobs, resultsNum, currentPage);
+				paginateButtons();
+				$('.tavern-filter').prop("checked", false);
+				$('.clear-filters').prop("disabled", true);
 			}
 
 		}
