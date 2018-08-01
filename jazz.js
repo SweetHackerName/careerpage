@@ -1,3 +1,4 @@
+console.log("test");
 jQuery(document).ready(function($) {
 
 	var jazzApi = 'https://api.resumatorapi.com/v1/jobs?',
@@ -42,7 +43,10 @@ jQuery(document).ready(function($) {
 				if (flags[jobs[i].department]) continue;
 				flags[jobs[i].department] = true;
 				//ahhh the below string concatenation is so long and I will fix..
+				//adding each individual tavern/location to the filter list
 				var tavern = $('<div><input type= "checkbox" class="job-filter tavern-filter" id="job-'+ jobs[i].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase() +'" name="job-'+ jobs[i].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase() +'"></input><label class="tavern-label filter-label" for="job-'+ jobs[i].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase() +'">' + jobs[i].department + '</label></div>').appendTo(taverns);
+				console.log(jobs[i].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase())
+				console.log(jobs[i].department);
 				// hasJobs.push();
 			};
 
@@ -54,7 +58,7 @@ jQuery(document).ready(function($) {
 
 
 
-		message.text('Please choose a location above to see open positions.').appendTo(jazzListings);
+		message.text('TESTING - Please choose a location above to see open positions.').appendTo(jazzListings);
 
 		$.each(jobs, function(j) {
 			var li = $('<li class="job-' + jobs[j].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase() + '"/>').appendTo(ul),
@@ -121,6 +125,8 @@ jQuery(document).ready(function($) {
 		});
 
 //showing location list on load...can be another list or show none on load
+
+
 		var $filterLists = $('.filter-list');
 		$filterLists.last().addClass('list-active');
 
@@ -135,7 +141,10 @@ jQuery(document).ready(function($) {
 		});
 
 		var filters = $('.tavern-filter').click(function() {
+			applyFilter(this.id);
 
+			/* Commenting out logic to test using applyFilter
+			console.log(this);
 			$('ul.open-jobs > li').removeClass('paginated');
 
 			var el = $('.' + this.id);
@@ -175,6 +184,7 @@ jQuery(document).ready(function($) {
 			// 	scrollTop: $(document).height()
 			// }, 300);
 			$(".shell").scrollTop(1000);
+			*/
 		});
 
 		$clear.click(function(e){
@@ -194,6 +204,94 @@ jQuery(document).ready(function($) {
 			$(this).toggleClass('open-job-selected');
 			$(this).next('.open-job-info').toggle();
 		})
+
+		//Add function to do the logic of clicking a given filter so that we can also call it with the query string.
+		function applyFilter(locationID, directCall = false){
+			if(locationID){
+				var baseEl = $('#' + locationID)[0];
+				if(baseEl)
+				{
+					$('ul.open-jobs > li').removeClass('paginated');
+
+					console.log(baseEl)
+					console.log(baseEl.id)
+
+					var el = $('.' + baseEl.id);
+					console.log(el)
+					if (baseEl.id.match(/(manage)/)) {
+						el = $('.job-four-corners-tavern-group');
+					}
+					if (baseEl.id.match(/(office|corpor)/)) {
+						el = $('.job-four-corners-tavern-group-corporate-office');
+					}
+
+					// original line: if (!el[0] && !$('.tab-option').first().hasClass('tab-selected')){
+					if (!el[0]){
+						message.text('Sorry, we are not currently hiring for these positions.').appendTo(jazzListings);
+						$('.jobs-message').show();
+					} else {
+						$('.jobs-message').hide();
+					}
+					if(directCall){
+						console.log($(baseEl).prop('checked'))
+						if($(baseEl).prop('checked'))
+						{
+							$(baseEl).prop({'checked' : false});
+						}
+						else{
+							$(baseEl).prop({'checked' : true});
+						}
+						console.log($(baseEl).prop('checked'))
+
+					}
+					if ($(baseEl).prop('checked')){
+						el.addClass('show-job');
+						$filteredJobs = $('.show-job');
+						//setting page back to 1 every time they refilter
+						currentPage = 1;
+						paginate($filteredJobs, resultsNum, currentPage);
+						paginateButtons();
+						$('.clear-filters').prop("disabled", false);
+					}else {
+						el.removeClass('show-job');
+						$filteredJobs = $('.show-job');
+						currentPage = 1;
+						paginate($filteredJobs, resultsNum, currentPage);
+						paginateButtons();
+					}
+					// $('.tavern-filter').removeClass('tavern-selected');
+					// $(this).addClass('tavern-selected');
+					// $('html, body').animate({
+					// 	scrollTop: $(document).height()
+					// }, 300);
+					$(".shell").scrollTop(1000);
+				}
+				else{
+
+					console.log("no location match for" + locationID);
+				}
+			}
+			else
+			{
+				console.log("no location id");
+			}
+
+		}
+
+		let params = new URLSearchParams(window.location.search.slice(1));
+		console.log("this is happening");
+		for (let p of params) {
+  		console.log(p);
+		}
+		//location ids are formatted as id="job-'+ jobs[i].department.replace(/[\+':-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase() +'"
+		if(params.has('locationID'))
+		{
+			var baseID = params.get("locationID");
+			console.log(baseID);
+			formattedLocation = 'job-'+ baseID.replace(/[\+'":-]+/g, "").replace(/[\ ]+/g, "-").toLowerCase();
+			applyFilter(formattedLocation, directCall=true);
+		}
+
 
 	}).fail(function(){
 		console.log('error');

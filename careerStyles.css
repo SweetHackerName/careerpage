@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css?family=Maven+Pro:400,700");
+@font-face {}
+body {
+  background: #363738;
+  color: #fff;
+}
+
+.jazz-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+@media only screen and (min-width: 767px) {
+  .jazz-wrapper {
+    flex-direction: row;
+  }
+}
+.jazz-wrapper .jazz-sidebar {
+  min-width: 270px;
+}
+.jazz-wrapper .jazz-sidebar button {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all .2s ease-in;
+  background: none;
+}
+.jazz-wrapper .jazz-sidebar button:hover {
+  cursor: pointer;
+}
+.jazz-wrapper .jazz-sidebar button:disabled {
+  color: graytext;
+}
+.jazz-wrapper .jazz-sidebar button:disabled:hover {
+  cursor: default;
+}
+.jazz-wrapper .jazz-sidebar .clear-filters {
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: #307cb0;
+}
+.jazz-wrapper .jazz-sidebar .clear-filters:hover {
+  color: graytext;
+}
+.jazz-wrapper .jazz-sidebar .clear-filters:focus {
+  outline: none;
+}
+.jazz-wrapper .jazz-sidebar .pagination {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+}
+.jazz-wrapper .jazz-sidebar .pagination button {
+  color: white;
+  font-size: 16px;
+  margin-right: 10px;
+  padding: 10px;
+  border: 2px solid #307cb0;
+}
+.jazz-wrapper .jazz-sidebar .pagination button:disabled {
+  color: graytext;
+  border: 2px solid graytext;
+}
+.jazz-wrapper .jazz-sidebar .pagination button:disabled:hover {
+  cursor: default;
+  color: graytext;
+}
+.jazz-wrapper .jazz-sidebar .pagination button:focus {
+  outline: none;
+}
+.jazz-wrapper .jazz-sidebar .pagination button:hover {
+  color: #307cb0;
+}
+.jazz-wrapper .jazz-Listings {
+  width: 100%;
+}
+.jazz-wrapper .tab-option h6 {
+  text-transform: capitalize;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.jazz-wrapper .tab-option h6:hover {
+  cursor: pointer;
+}
+.jazz-wrapper .tab-option > div {
+  padding-left: 5px;
+}
+.jazz-wrapper .tab-option .list-active {
+  display: flex;
+}
+.jazz-wrapper .open-jobs {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media only screen and (min-width: 767px) {
+  .jazz-wrapper .open-jobs {
+    padding-left: 20px;
+  }
+}
+.jazz-wrapper .open-jobs li {
+  position: relative;
+  display: none;
+  opacity: 0;
+  transition: all ease-in .3s;
+}
+.jazz-wrapper .open-jobs .paginated {
+  display: block;
+  opacity: 1;
+}
+.jazz-wrapper .open-jobs .open-job {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #307cb0;
+  padding: 12px 10px;
+  margin: 10px 0;
+  text-transform: capitalize;
+}
+.jazz-wrapper .open-jobs .open-job .open-job-name {
+  font-weight: bold;
+}
+@media only screen and (min-width: 767px) {
+  .jazz-wrapper .open-jobs .open-job {
+    font-weight: bold;
+    flex-direction: row;
+  }
+}
+.jazz-wrapper .open-jobs .job-apply {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+.jazz-wrapper .filter-list {
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+@media only screen and (min-width: 767px) {
+  .jazz-wrapper .filter-list {
+    flex-direction: column;
+  }
+}
+.jazz-wrapper .filter-list div {
+  margin-right: 20px;
+}
+.jazz-wrapper .filter-label {
+  text-transform: capitalize;
+  margin-bottom: 5px;
+  display: block;
+}
+.jazz-wrapper .show-job {
+  display: block;
+}
+.jazz-wrapper .job-filter {
+  opacity: 0;
+  position: absolute;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 3px;
+  cursor: pointer;
+}
+.jazz-wrapper .job-filter + .filter-label:before {
+  content: '';
+  background: transparent;
+  border: 2px solid #ddd;
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  padding: 2px;
+  margin-right: 5px;
+  text-align: center;
+}
+@media only screen and (min-width: 767px) {
+  .jazz-wrapper .job-filter + .filter-label:before {
+    margin-right: 10px;
+  }
+}
+.jazz-wrapper .job-filter:checked + .filter-label:before {
+  background: grey;
+  box-shadow: inset 0px 0px 0px 3px #fff;
+}
